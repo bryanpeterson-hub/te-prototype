@@ -1,0 +1,509 @@
+/**
+ * TE Connectivity Prototype - Styles
+ * Colors: TE blue #2E4957, grey #666666, orange #E98300
+ */
+:root {
+  --te-blue: #2E4957;
+  --te-blue-dark: #1e3440;
+  --te-grey: #666666;
+  --te-grey-light: #999999;
+  --te-orange: #E98300;
+  --te-orange-dark: #c96f00;
+  --te-white: #ffffff;
+  --te-bg-light: #f5f5f5;
+  --te-border: #e0e0e0;
+  --font-primary: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--te-grey);
+  background: var(--te-white);
+}
+
+a {
+  color: var(--te-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--te-orange);
+  text-decoration: underline;
+}
+
+/* Header */
+.site-header {
+  background: var(--te-white);
+  border-bottom: 1px solid var(--te-border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-top {
+  background: var(--te-blue);
+  color: var(--te-white);
+  padding: 8px 24px;
+  font-size: 14px;
+}
+
+.header-top a {
+  color: var(--te-white);
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logo {
+  height: 40px;
+}
+
+.nav-main {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-main a {
+  font-weight: 600;
+  color: var(--te-blue);
+  text-decoration: none;
+}
+
+.nav-main a:hover {
+  color: var(--te-orange);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.btn-primary {
+  background: var(--te-orange);
+  color: var(--te-white);
+}
+
+.btn-primary:hover {
+  background: var(--te-orange-dark);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--te-blue);
+  color: var(--te-blue);
+}
+
+.btn-outline:hover {
+  background: var(--te-blue);
+  color: var(--te-white);
+}
+
+/* Hero */
+.hero {
+  background: var(--te-blue);
+  color: var(--te-white);
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto 24px;
+}
+
+/* Content sections */
+.section {
+  padding: 48px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: var(--te-blue);
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: var(--te-white);
+  border: 1px solid var(--te-border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.125rem;
+  color: var(--te-blue);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: var(--te-grey);
+}
+
+/* CTA blocks */
+.cta-blocks {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin: 48px 0;
+}
+
+.cta-block {
+  background: var(--te-bg-light);
+  padding: 32px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.cta-block h3 {
+  color: var(--te-blue);
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.cta-block p {
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+/* Footer */
+.site-footer {
+  background: var(--te-blue);
+  color: var(--te-white);
+  padding: 48px 24px 24px;
+  margin-top: 48px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.footer-links a {
+  color: var(--te-white);
+  opacity: 0.9;
+}
+
+.footer-links a:hover {
+  opacity: 1;
+}
+
+.footer-copy {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+/* Product listing */
+.product-list {
+  list-style: none;
+}
+
+.product-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--te-border);
+}
+
+.product-list a {
+  font-weight: 500;
+}
+
+/* Chat widget */
+.chat-widget {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+}
+
+.chat-toggle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--te-orange);
+  color: var(--te-white);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(233, 131, 0, 0.4);
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.chat-toggle:hover {
+  transform: scale(1.05);
+}
+
+.chat-panel {
+  display: none;
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  width: 400px;
+  max-width: calc(100vw - 48px);
+  height: 550px;
+  background: var(--te-white);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chat-panel.open {
+  display: flex;
+}
+
+.chat-header {
+  background: var(--te-blue);
+  color: var(--te-white);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.chat-close {
+  background: none;
+  border: none;
+  color: var(--te-white);
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background: var(--te-bg-light);
+}
+
+.message {
+  margin-bottom: 16px;
+  max-width: 85%;
+}
+
+.message.agent {
+  margin-right: auto;
+}
+
+.message.user {
+  margin-left: auto;
+}
+
+.message-bubble {
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+
+.message.agent .message-bubble {
+  background: var(--te-white);
+  border: 1px solid var(--te-border);
+  color: var(--te-grey);
+}
+
+.message.user .message-bubble {
+  background: var(--te-blue);
+  color: var(--te-white);
+}
+
+.message-time {
+  font-size: 0.75rem;
+  color: var(--te-grey-light);
+  margin-top: 4px;
+}
+
+.chat-input-area {
+  padding: 16px;
+  border-top: 1px solid var(--te-border);
+  background: var(--te-white);
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid var(--te-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--te-orange);
+}
+
+.chat-send {
+  padding: 12px 20px;
+  background: var(--te-orange);
+  color: var(--te-white);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.chat-send:hover {
+  background: var(--te-orange-dark);
+}
+
+.quick-replies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.quick-reply-btn {
+  padding: 8px 12px;
+  background: var(--te-bg-light);
+  border: 1px solid var(--te-border);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: var(--te-blue);
+}
+
+.quick-reply-btn:hover {
+  background: var(--te-blue);
+  color: var(--te-white);
+  border-color: var(--te-blue);
+}
+
+/* Recommendation cards in chat */
+.recommendation-card {
+  background: var(--te-white);
+  border: 1px solid var(--te-border);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px 0;
+  font-size: 0.85rem;
+}
+
+.recommendation-card a {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.recommendation-card .type {
+  font-size: 0.75rem;
+  color: var(--te-orange);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* Product specs in chat */
+.specs-table {
+  font-size: 0.8rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.specs-table th,
+.specs-table td {
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--te-border);
+}
+
+.specs-table th {
+  color: var(--te-grey);
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-main {
+    display: none;
+  }
+  
+  .cta-blocks {
+    grid-template-columns: 1fr;
+  }
+  
+  .chat-panel {
+    width: 100%;
+    height: 80vh;
+    bottom: 0;
+    right: 0;
+    border-radius: 12px 12px 0 0;
+  }
+}

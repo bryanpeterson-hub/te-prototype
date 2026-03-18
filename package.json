@@ -1,0 +1,11 @@
+{
+  "name": "te-prototype",
+  "version": "1.0.0",
+  "description": "TE Connectivity website prototype with digital assistant",
+  "engines": {
+    "node": "18.x"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
