@@ -53,7 +53,9 @@
 
     detectPageContext: function() {
       const path = window.location.pathname || window.location.hash;
-      if (path.includes('e-mobility') || path.includes('industries')) {
+      if (path.includes('aerospace')) {
+        this.state.pageContext = 'aerospace';
+      } else if (path.includes('e-mobility') || path.includes('industries')) {
         this.state.pageContext = 'e-mobility';
       } else if (path.includes('products')) {
         this.state.pageContext = 'product-page';
@@ -256,6 +258,7 @@
 
     showGreeting: function() {
       const isProductPage = this.state.pageContext === 'product-page';
+      const isAerospace = this.state.pageContext === 'aerospace';
       let greeting = "Hi! I'm your TE V.A., your TE Virtual Assistant. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?";
       let examples = [
         "What EV connectors do you recommend?",
@@ -266,6 +269,8 @@
       if (isProductPage) {
         greeting = "Hi! I'm your TE V.A., your TE Virtual Assistant. I see you're looking at our products. I can provide more specific recommendations based on your needs. What would you like to know?";
         examples = ["Show me the specs", "Compare with other products", "Schedule a call with sales"];
+      } else if (isAerospace) {
+        examples = ["Aerospace connector solutions", "High-speed interconnect for aircraft", "Connect with an aerospace expert"];
       }
 
       this.addMessageWithTyping(greeting, { quickReplies: examples }, 600, 25);
