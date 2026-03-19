@@ -853,15 +853,15 @@ a:hover {
 .chat-toggle {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 24px;
+  gap: 18px;
+  padding: 18px 36px;
   border-radius: 999px;
-  background: #e98300;
-  color: var(--te-white);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  background: white;
+  color: #e98300;
+  border: 2px solid rgba(233, 131, 0, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.06);
   cursor: pointer;
-  font-size: 15px;
+  font-size: 22px;
   font-weight: 700;
   transition: transform 0.2s;
 }
@@ -875,9 +875,11 @@ a:hover {
 }
 
 .chat-toggle-icon {
-  width: 28px;
-  height: 28px;
+  width: 42px;
+  height: 42px;
   object-fit: contain;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .chat-panel {
@@ -912,6 +914,8 @@ a:hover {
   width: 24px;
   height: 24px;
   object-fit: contain;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .chat-header-title {
@@ -1002,6 +1006,7 @@ a:hover {
   width: 24px;
   height: 24px;
   object-fit: contain;
+  border-radius: 50%;
 }
 
 .message.user {

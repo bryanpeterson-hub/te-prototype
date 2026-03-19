@@ -253,7 +253,7 @@
 
     showGreeting: function() {
       const isProductPage = this.state.pageContext === 'product-page';
-      let greeting = "Hi! I'm TE.V.A., TE's Virtual Assistant. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?";
+      let greeting = "Hi! I'm your TE V.A., your TE Virtual Assistant. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?";
       let examples = [
         "What EV connectors do you recommend?",
         "I need help with battery connectivity",
@@ -261,7 +261,7 @@
       ];
 
       if (isProductPage) {
-        greeting = "Hi! I'm TE.V.A., TE's Virtual Assistant. I see you're looking at our products. I can provide more specific recommendations based on your needs. What would you like to know?";
+        greeting = "Hi! I'm your TE V.A., your TE Virtual Assistant. I see you're looking at our products. I can provide more specific recommendations based on your needs. What would you like to know?";
         examples = ["Show me the specs", "Compare with other products", "Schedule a call with sales"];
       }
 
