@@ -46,19 +46,23 @@ a:hover {
 .utility-bar {
   background: #666666;
   border-top: 2px solid var(--te-orange);
-  padding: 8px 24px;
-  font-size: 13px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100%;
   box-sizing: border-box;
 }
 
-.utility-bar,
-.utility-bar a,
-.utility-bar span {
+.utility-bar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 24px;
+  font-size: 13px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.utility-bar-inner,
+.utility-bar-inner a,
+.utility-bar-inner span {
   color: rgba(255, 255, 255, 0.95);
 }
 
@@ -103,8 +107,10 @@ a:hover {
 }
 
 .logo {
-  height: 40px;
+  height: 64px;
+  width: auto;
   display: block;
+  object-fit: contain;
 }
 
 .header-search {
@@ -168,8 +174,11 @@ a:hover {
   gap: 0;
   list-style: none;
   background: var(--te-white);
+  border-top: 1px solid #EDEDEE;
   border-bottom: 1px solid var(--te-border);
+  justify-content: center;
 }
+
 
 .nav-main li {
   position: relative;
@@ -200,10 +209,14 @@ a:hover {
 .announcement-banner {
   background: var(--te-teal);
   color: var(--te-white);
-  padding: 12px 24px;
+  width: 100%;
+}
+
+.announcement-banner-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 12px 24px;
   max-width: 1400px;
   margin: 0 auto;
 }
