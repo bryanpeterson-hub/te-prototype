@@ -914,10 +914,22 @@ a:hover {
   object-fit: contain;
 }
 
-.chat-header h3 {
+.chat-header-title {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chat-agent-name {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.chat-agent-subtitle {
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.95;
 }
 
 .chat-header-actions {
@@ -946,6 +958,20 @@ a:hover {
   overflow-y: auto;
   padding: 20px;
   background: var(--te-bg-light);
+}
+
+.date-separator {
+  text-align: center;
+  margin: 16px 0;
+  font-size: 0.8rem;
+  color: var(--te-grey);
+  padding: 4px 16px;
+  background: #e8e4df;
+  border-radius: 999px;
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .message {

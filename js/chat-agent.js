@@ -12,6 +12,28 @@
     return (path.includes('/products/') || path.includes('/industries/')) ? '../' : '';
   })();
 
+  function formatMessageTime(date) {
+    const d = date || new Date();
+    const weekday = d.toLocaleDateString('en-US', { weekday: 'short' });
+    const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    return weekday + ' ' + time;
+  }
+
+  function ensureDateSeparator(container, date, insertBeforeEl) {
+    const dateStr = (date || new Date()).toDateString();
+    const existing = container.querySelector('.date-separator[data-date="' + dateStr + '"]');
+    if (existing) return;
+    const sep = document.createElement('div');
+    sep.className = 'date-separator';
+    sep.dataset.date = dateStr;
+    sep.textContent = dateStr === new Date().toDateString() ? 'Today' : (date || new Date()).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+    if (insertBeforeEl) {
+      container.insertBefore(sep, insertBeforeEl);
+    } else {
+      container.appendChild(sep);
+    }
+  }
+
   const ChatAgent = {
     state: {
       step: 'greeting',
@@ -115,14 +137,16 @@
         bubbleContent += this.renderQuickReplies(options.quickReplies);
       }
 
+      const now = new Date();
       const avatarHtml = isUser ? '' : `<div class="message-avatar"><img src="${imgBase}images/te-agent-icon.png" alt=""></div>`;
       msg.innerHTML = `
         ${avatarHtml}
         <div class="message-content">
           <div class="message-bubble">${bubbleContent}</div>
-          <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+          <div class="message-time">${formatMessageTime(now)}</div>
         </div>
       `;
+      ensureDateSeparator(container, now, msg);
       container.appendChild(msg);
       container.scrollTop = container.scrollHeight;
     },
@@ -177,7 +201,9 @@
           const typeNext = function() {
             if (i >= text.length) {
               bubble.innerHTML = text + htmlSuffix;
-              timeEl.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              const now = new Date();
+              ensureDateSeparator(container, now, msg);
+              timeEl.textContent = formatMessageTime(now);
               container.scrollTop = container.scrollHeight;
               resolve();
               return;
@@ -227,7 +253,7 @@
 
     showGreeting: function() {
       const isProductPage = this.state.pageContext === 'product-page';
-      let greeting = "Hi! I'm your TE Connect Agent. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?";
+      let greeting = "Hi! I'm TE.V.A., TE's Virtual Assistant. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?";
       let examples = [
         "What EV connectors do you recommend?",
         "I need help with battery connectivity",
@@ -235,7 +261,7 @@
       ];
 
       if (isProductPage) {
-        greeting = "Hi! I'm your TE Connect Agent. I see you're looking at our products. I can provide more specific recommendations based on your needs. What would you like to know?";
+        greeting = "Hi! I'm TE.V.A., TE's Virtual Assistant. I see you're looking at our products. I can provide more specific recommendations based on your needs. What would you like to know?";
         examples = ["Show me the specs", "Compare with other products", "Schedule a call with sales"];
       }
 
