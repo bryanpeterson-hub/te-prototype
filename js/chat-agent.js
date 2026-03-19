@@ -103,8 +103,11 @@
         this.closePanel();
       } else {
         panel.classList.add('open');
-        if (this.state.step === 'greeting' && this.getMessages().length === 0) {
-          this.showGreeting();
+        if (this.getMessages().length === 0) {
+          const self = this;
+          requestAnimationFrame(function() {
+            self.showGreeting();
+          });
         }
       }
     },
