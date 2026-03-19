@@ -44,16 +44,22 @@ a:hover {
 
 /* Utility bar */
 .utility-bar {
-  background: #e8e8e8;
+  background: #666666;
+  border-top: 2px solid var(--te-orange);
   padding: 8px 24px;
   font-size: 13px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-.utility-bar a {
-  color: var(--te-grey);
+.utility-bar,
+.utility-bar a,
+.utility-bar span {
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .utility-left {
@@ -213,6 +219,9 @@ a:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 400px;
+  max-width: 1400px;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 .hero-cta {
@@ -275,14 +284,14 @@ a:hover {
 .teal-boxes {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0;
+  gap: 24px;
   padding: 32px 24px;
   max-width: 1400px;
   margin: 0 auto;
 }
 
 .teal-box {
-  background: var(--te-teal);
+  background: #167a87;
   color: white;
   padding: 32px 24px;
   text-align: center;
@@ -306,13 +315,15 @@ a:hover {
 
 /* Registration bar */
 .registration-bar {
-  background: #4a4a4a;
+  background: #2E4957;
   color: white;
   padding: 16px 24px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .registration-bar a {
