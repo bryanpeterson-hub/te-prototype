@@ -7,6 +7,11 @@
 (function() {
   'use strict';
 
+  const imgBase = (function() {
+    const path = window.location.pathname || '';
+    return (path.includes('/products/') || path.includes('/industries/')) ? '../' : '';
+  })();
+
   const ChatAgent = {
     state: {
       step: 'greeting',
@@ -53,12 +58,10 @@
       const self = this;
       const toggle = document.getElementById('chatToggle');
       const close = document.getElementById('chatClose');
-      const send = document.getElementById('chatSend');
       const input = document.getElementById('chatInput');
 
       if (toggle) toggle.addEventListener('click', () => this.togglePanel());
       if (close) close.addEventListener('click', () => this.closePanel());
-      if (send) send.addEventListener('click', () => this.sendUserMessage());
       if (input) input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') this.sendUserMessage();
       });
@@ -112,12 +115,81 @@
         bubbleContent += this.renderQuickReplies(options.quickReplies);
       }
 
+      const avatarHtml = isUser ? '' : `<div class="message-avatar"><img src="${imgBase}images/te-agent-icon.png" alt=""></div>`;
       msg.innerHTML = `
-        <div class="message-bubble">${bubbleContent}</div>
-        <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+        ${avatarHtml}
+        <div class="message-content">
+          <div class="message-bubble">${bubbleContent}</div>
+          <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+        </div>
       `;
       container.appendChild(msg);
       container.scrollTop = container.scrollHeight;
+    },
+
+    showTypingIndicator: function() {
+      const container = document.getElementById('chatMessages');
+      if (!container) return;
+      const typing = document.createElement('div');
+      typing.className = 'message agent typing';
+      typing.id = 'typingIndicator';
+      typing.innerHTML = `
+        <div class="message-avatar"><img src="${imgBase}images/te-agent-icon.png" alt=""></div>
+        <div class="message-content">
+          <div class="message-bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div>
+        </div>
+      `;
+      container.appendChild(typing);
+      container.scrollTop = container.scrollHeight;
+    },
+
+    removeTypingIndicator: function() {
+      const el = document.getElementById('typingIndicator');
+      if (el) el.remove();
+    },
+
+    addMessageWithTyping: function(text, options = {}, thinkMs = 800, charsPerMs = 30) {
+      const self = this;
+      const container = document.getElementById('chatMessages');
+      if (!container) return new Promise(function(r) { r(); });
+
+      const htmlSuffix = (options.recommendations ? self.renderRecommendations(options.recommendations) : '') +
+        (options.specs ? self.renderSpecs(options.specs) : '') +
+        (options.quickReplies ? self.renderQuickReplies(options.quickReplies) : '');
+
+      return new Promise(function(resolve) {
+        self.showTypingIndicator();
+        setTimeout(function() {
+          self.removeTypingIndicator();
+          const msg = document.createElement('div');
+          msg.className = 'message agent';
+          msg.innerHTML = `
+            <div class="message-avatar"><img src="${imgBase}images/te-agent-icon.png" alt=""></div>
+            <div class="message-content">
+              <div class="message-bubble"></div>
+              <div class="message-time"></div>
+            </div>
+          `;
+          container.appendChild(msg);
+          const bubble = msg.querySelector('.message-bubble');
+          const timeEl = msg.querySelector('.message-time');
+          let i = 0;
+          const typeNext = function() {
+            if (i >= text.length) {
+              bubble.innerHTML = text + htmlSuffix;
+              timeEl.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              container.scrollTop = container.scrollHeight;
+              resolve();
+              return;
+            }
+            bubble.textContent = text.slice(0, i + 1);
+            i++;
+            container.scrollTop = container.scrollHeight;
+            setTimeout(typeNext, charsPerMs);
+          };
+          setTimeout(typeNext, 50);
+        }, thinkMs);
+      });
     },
 
     renderRecommendations: function(items) {
@@ -155,7 +227,7 @@
 
     showGreeting: function() {
       const isProductPage = this.state.pageContext === 'product-page';
-      let greeting = "Hello! I'm the TE digital assistant. How can I help you today?";
+      let greeting = "Hi! I'm your TE Connect Agent. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?";
       let examples = [
         "What EV connectors do you recommend?",
         "I need help with battery connectivity",
@@ -163,13 +235,11 @@
       ];
 
       if (isProductPage) {
-        greeting = "I see you're looking at our products. I can provide more specific recommendations based on your needs. What would you like to know?";
+        greeting = "Hi! I'm your TE Connect Agent. I see you're looking at our products. I can provide more specific recommendations based on your needs. What would you like to know?";
         examples = ["Show me the specs", "Compare with other products", "Schedule a call with sales"];
       }
 
-      this.addMessage(greeting + "<br><br><strong>I can help with:</strong>", false, {
-        quickReplies: examples
-      });
+      this.addMessageWithTyping(greeting, { quickReplies: examples }, 600, 25);
       this.state.step = 'awaiting_question';
     },
 
@@ -180,7 +250,7 @@
       if (t.includes('maybe later') || t.includes('not ready') || t.includes('not now')) {
         this.state.saidMaybeLater = true;
         this.state.askedForCall = true;
-        this.addMessage("No problem! Would you like me to follow up with more information via email? Just share your email address and we'll send you relevant product details and resources.", false, {
+        this.addMessageWithTyping("No problem! Would you like me to follow up with more information via email? Just share your email address and we'll send you relevant product details and resources.", {
           quickReplies: ['Yes, here\'s my email', 'No thanks']
         });
         this.state.step = 'awaiting_email';
@@ -193,7 +263,7 @@
         if (email) {
           this.state.providedEmail = true;
           this.state.email = email[0];
-          this.addMessage(`Thank you! We've noted your email (${email[0]}). Our team will follow up with product information and our SDR will reach out to discuss your needs. You'll also receive relevant content as part of our nurture campaign. Is there anything else I can help with?`, false, {
+          this.addMessageWithTyping(`Thank you! We've noted your email (${email[0]}). Our team will follow up with product information and our SDR will reach out to discuss your needs. You'll also receive relevant content as part of our nurture campaign. Is there anything else I can help with?`, {
             quickReplies: ['No, that\'s all', 'Yes, I have more questions']
           });
           this.state.step = 'complete';
@@ -206,20 +276,20 @@
         this.state.askedForSpecs = true;
         const product = this.getProductForSpecs();
         if (product) {
-          this.addMessage(`Here are the specifications for ${product.name}:`, false, { specs: product.specs });
-          this.addMessage("Would you like to schedule a call with a sales representative to discuss your specific requirements?", false, {
+          this.addMessageWithTyping(`Here are the specifications for ${product.name}:`, { specs: product.specs });
+          this.addMessageWithTyping("Would you like to schedule a call with a sales representative to discuss your specific requirements?", {
             quickReplies: ['Yes, schedule a call', 'Maybe later', 'Send me more info via email']
           });
           this.state.step = 'awaiting_call_decision';
         } else {
-          this.addMessage("Which product would you like to see specs for? Try visiting a product page or ask about DEUTSCH DT Connectors or HIVONEX High-Voltage Connectors.", false);
+          this.addMessageWithTyping("Which product would you like to see specs for? Try visiting a product page or ask about DEUTSCH DT Connectors or HIVONEX High-Voltage Connectors.");
         }
         return;
       }
 
       // Schedule call - yes
       if ((t.includes('schedule') || t.includes('yes') || t.includes('call')) && !t.includes('maybe')) {
-        this.addMessage("Great! I'll connect you with a sales representative. Please provide your email and we'll send a calendar link to schedule a call at your convenience.", false, {
+        this.addMessageWithTyping("Great! I'll connect you with a sales representative. Please provide your email and we'll send a calendar link to schedule a call at your convenience.", {
           quickReplies: ['Maybe later']
         });
         this.state.step = 'awaiting_email';
@@ -230,7 +300,7 @@
       if (t.includes('ev connector') || t.includes('electric vehicle') || t.includes('e-mobility') || t.includes('recommend')) {
         const products = TE_DATA.products.filter(p => p.industry.includes('e-mobility'));
         const content = TE_DATA.content.filter(c => c.industry.includes('e-mobility'));
-        this.addMessage("Based on your interest in e-mobility, here are some products and resources I recommend:", false, {
+        this.addMessageWithTyping("Based on your interest in e-mobility, here are some products and resources I recommend:", {
           recommendations: [
             { type: 'Product', title: products[0].name, description: products[0].description, url: products[0].url },
             { type: 'Product', title: products[1].name, description: products[1].description, url: products[1].url },
@@ -246,7 +316,7 @@
       // Specific product question
       if (t.includes('deutsch') || t.includes('dt connector')) {
         const p = TE_DATA.products.find(x => x.id === 'deutsch-dt');
-        this.addMessage(`${p.name}: ${p.description}`, false, {
+        this.addMessageWithTyping(`${p.name}: ${p.description}`, {
           recommendations: [{ type: 'Product', title: p.name, url: p.url }],
           quickReplies: ['Show me the specs', 'Compare with HIVONEX', 'Schedule a call']
         });
@@ -256,7 +326,7 @@
 
       if (t.includes('hivonex') || t.includes('high-voltage')) {
         const p = TE_DATA.products.find(x => x.id === 'hivonex');
-        this.addMessage(`${p.name}: ${p.description}`, false, {
+        this.addMessageWithTyping(`${p.name}: ${p.description}`, {
           recommendations: [{ type: 'Product', title: p.name, url: p.url }],
           quickReplies: ['Show me the specs', 'Schedule a call']
         });
@@ -269,7 +339,7 @@
         const pid = this.state.currentProduct.replace(/_/g, '-');
         const p = TE_DATA.products.find(x => x.id === pid);
         if (p) {
-          this.addMessage(`For ${p.name}, I'd recommend:`, false, {
+          this.addMessageWithTyping(`For ${p.name}, I'd recommend:`, {
             recommendations: [
               { type: 'Whitepaper', title: TE_DATA.content[0].title, url: '#' },
               { type: 'Article', title: TE_DATA.content[2].title, url: '#' }
@@ -282,21 +352,21 @@
 
       // What do I need next
       if (t.includes('need next') || t.includes('what next')) {
-        this.addMessage("Based on our conversation, here's what I suggest:", false, {
+        this.addMessageWithTyping("Based on our conversation, here's what I suggest:", {
           recommendations: [
             { type: 'Product', title: 'HIVONEX High-Voltage Connectors', description: 'For battery and charging applications', url: 'products/hivonex-connectors.html' },
             { type: 'Whitepaper', title: 'Battery Connectivity, Management and Protection', url: '#' }
           ],
           quickReplies: ['Show me the specs', 'Schedule a call with sales', 'Maybe later']
         });
-        this.addMessage("What would you like to do next?", false, {
+        this.addMessageWithTyping("What would you like to do next?", {
           quickReplies: ['Show me the specs', 'Schedule a call', 'Maybe later']
         });
         return;
       }
 
       // Default
-      this.addMessage("I can help you with EV connectors, product recommendations, specifications, and connecting you with our sales team. What would you like to know?", false, {
+      this.addMessageWithTyping("I can help you with EV connectors, product recommendations, specifications, and connecting you with our sales team. What would you like to know?", {
         quickReplies: ['EV connector recommendations', 'Show me product specs', 'Schedule a call']
       });
     },
