@@ -644,6 +644,9 @@
     },
 
     applyHardcodedStradaState: function() {
+      var container = document.getElementById('chatMessages');
+      if (!container) return;
+      container.innerHTML = '';
       // Conversation history up to the point where prospect clicked to STRADA Whisper page
       const messages = [
         { text: "Hi! I'm your TE V.A., your TE Virtual Assistant. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?", isUser: false, quickReplies: ['Aerospace connector solutions', 'High-speed interconnect for aircraft', 'Connect with an aerospace expert'] },
