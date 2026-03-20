@@ -943,9 +943,9 @@ nav {
   gap: 18px;
   padding: 18px 36px;
   border-radius: 999px;
-  background: white;
-  color: #e98300;
-  border: 2px solid rgba(233, 131, 0, 0.4);
+  background: #e98300;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.06);
   cursor: pointer;
   font-size: 22px;
