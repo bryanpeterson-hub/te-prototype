@@ -605,8 +605,11 @@
     },
 
     restoreState: function() {
-      // STRADA Whisper page: hardcoded conversation (sessionStorage unreliable across navigation)
-      if (this.state.pageContext === 'product-page' && this.state.currentProduct === 'strada-whisper') {
+      // STRADA Whisper page: hardcoded conversation (detect via body attribute, path can vary by server)
+      const productId = document.body && document.body.dataset.productId;
+      if (productId === 'strada-whisper') {
+        this.state.pageContext = 'product-page';
+        this.state.currentProduct = 'strada-whisper';
         this.applyHardcodedStradaState();
         return;
       }
