@@ -88,6 +88,19 @@ const TE_DATA = {
         'Response Time': '< 10s'
       },
       url: 'products/temperature-sensors.html'
+    },
+    {
+      id: 'strada-whisper',
+      name: 'STRADA Whisper High Speed Backplane Connectors',
+      category: 'connectors',
+      industry: ['data-center', 'industrial'],
+      description: 'Scalable backplane solutions to 112 Gbps PAM-4. High-performing, high-bandwidth connectors with low noise and minimal skew.',
+      specs: {
+        'Data Rate': 'Up to 112 Gbps PAM-4',
+        'Architecture': 'Backwards compatible 56G to 112G',
+        'Design': 'Folded signal pins, C-shaped shields, EON technology'
+      },
+      url: 'products/strada-whisper.html'
     }
   ],
 

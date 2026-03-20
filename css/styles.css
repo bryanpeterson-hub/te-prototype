@@ -2008,6 +2008,246 @@ nav {
   color: var(--te-grey);
 }
 
+/* Product page - STRADA Whisper layout */
+.product-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+.product-breadcrumb {
+  padding: 24px 0 8px;
+  font-size: 0.9rem;
+}
+
+.product-breadcrumb a {
+  color: var(--te-blue);
+}
+
+.product-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-sep {
+  color: var(--te-grey-light);
+  margin: 0 6px;
+}
+
+.product-page-title {
+  font-size: 1.75rem;
+  color: var(--te-grey);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.product-tabs {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+  border-bottom: 2px solid var(--te-border);
+}
+
+.product-tab {
+  padding-bottom: 12px;
+  margin-bottom: -2px;
+  color: var(--te-grey);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.product-tab:hover,
+.product-tab.active {
+  color: var(--te-orange);
+  border-bottom: 2px solid var(--te-orange);
+}
+
+.product-hero {
+  margin-bottom: 48px;
+}
+
+.product-hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  align-items: center;
+  background: white;
+  padding: 32px;
+  border: 1px solid var(--te-border);
+}
+
+.product-hero-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.product-hero-headline {
+  font-size: 1.5rem;
+  color: var(--te-grey);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.product-hero-desc {
+  font-size: 1rem;
+  color: var(--te-grey);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.product-hero-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-hero-link {
+  color: var(--te-blue);
+  font-weight: 600;
+}
+
+.product-hero-link:hover {
+  color: var(--te-orange);
+  text-decoration: underline;
+}
+
+.product-intro {
+  margin-bottom: 40px;
+}
+
+.product-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 100%;
+}
+
+.product-intro-grid p {
+  font-size: 1rem;
+  color: var(--te-grey);
+  line-height: 1.6;
+}
+
+.product-featured,
+.product-benefits {
+  margin-bottom: 40px;
+}
+
+.product-featured-grid,
+.product-benefits-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.product-featured-label h3,
+.product-benefits-label h3 {
+  font-size: 1rem;
+  color: var(--te-grey);
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.product-featured-label h4,
+.product-benefits-label h4 {
+  font-size: 0.9rem;
+  color: var(--te-grey-light);
+  font-weight: 600;
+  margin: 0;
+}
+
+.product-featured-text p,
+.product-benefits-list p {
+  font-size: 1rem;
+  color: var(--te-grey);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.product-benefits-list ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.product-benefits-list li {
+  margin-bottom: 12px;
+  color: var(--te-grey);
+  line-height: 1.5;
+}
+
+.product-image-section {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.product-image-row {
+  max-width: 620px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.product-resource {
+  background: var(--te-grey-bg);
+  margin: 0 -24px;
+  padding: 40px 24px;
+}
+
+.product-resource-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.product-brochure-card {
+  background: white;
+  padding: 24px;
+  border: 1px solid var(--te-border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-decoration: none;
+  position: relative;
+}
+
+.product-brochure-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.product-brochure-label {
+  font-size: 0.75rem;
+  color: var(--te-grey);
+}
+
+.product-brochure-title {
+  font-weight: 600;
+  color: #0066A1;
+  font-size: 1rem;
+}
+
+.product-resource-text p {
+  font-size: 0.95rem;
+  color: var(--te-grey);
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+.product-resource-link {
+  color: var(--te-blue);
+  font-weight: 600;
+}
+
+.product-resource-link:hover {
+  color: var(--te-orange);
+  text-decoration: underline;
+}
+
 @media (max-width: 1024px) {
   .hero-split {
     grid-template-columns: 1fr;
@@ -2083,6 +2323,23 @@ nav {
   .aero-hero-overlay {
     width: 100%;
     min-width: 0;
+  }
+
+  .product-hero-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .product-intro-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-featured-grid,
+  .product-benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-resource-inner {
+    grid-template-columns: 1fr;
   }
 }
 
