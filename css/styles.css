@@ -1420,70 +1420,103 @@ nav {
 
 .aero-contact-bar {
   background: var(--te-grey-bg);
-  padding: 16px 24px;
+  padding: 20px 24px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 8px;
   margin: 0 -24px 48px;
+}
+
+.aero-contact-label {
+  color: var(--te-blue);
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 .aero-contact-highlight {
   color: var(--te-orange);
   font-weight: 600;
+  font-size: 1rem;
 }
 
-.aero-podcasts {
-  background: var(--te-blue);
-  color: white;
-  padding: 48px 24px;
-  margin: 0 -24px 48px;
+.aero-podcasts-section {
+  margin-bottom: 48px;
 }
 
-.aero-podcasts-title {
+.aero-podcasts-headline {
   font-size: 0.9rem;
   text-transform: uppercase;
   text-align: center;
-  margin-bottom: 32px;
-  font-weight: 600;
+  margin-bottom: 24px;
+  font-weight: 700;
   letter-spacing: 0.05em;
+  color: var(--te-grey);
 }
 
-.aero-podcasts-grid {
+.aero-podcasts-box {
   max-width: 1200px;
   margin: 0 auto;
+  background: #2C414C;
+  border-radius: 4px;
+  padding: 40px 32px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 32px;
+  color: white;
 }
 
 .aero-podcast-card {
-  text-align: center;
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.aero-podcast-play {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--te-orange);
+.aero-podcast-card-title {
+  font-size: 1rem;
+  font-weight: 700;
   color: white;
+  margin: 0;
+}
+
+.aero-podcast-card-content {
   display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.aero-podcast-play-wrap {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.aero-podcast-play-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--te-orange);
+  background: transparent;
+  color: var(--te-orange);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 16px;
-  font-size: 1.5rem;
+  font-size: 0.9rem;
   line-height: 1;
 }
 
 .aero-podcast-time {
-  display: block;
   font-size: 0.85rem;
-  margin-bottom: 12px;
+  color: var(--te-orange);
+  font-weight: 600;
 }
 
 .aero-podcast-card p {
   font-size: 0.9rem;
-  margin-bottom: 12px;
+  margin: 0;
+  line-height: 1.5;
   opacity: 0.95;
 }
 
@@ -1491,6 +1524,7 @@ nav {
   color: var(--te-orange);
   font-weight: 600;
   text-decoration: underline;
+  margin-top: 4px;
 }
 
 .aero-video-grid {
@@ -1996,8 +2030,7 @@ nav {
   }
 
   .aero-apps-grid,
-  .aero-product-categories,
-  .aero-podcasts-grid,
+  .aero-podcasts-box,
   .aero-brochures-grid,
   .aero-commercial-products,
   .aero-reads-grid {
@@ -2054,8 +2087,7 @@ nav {
   }
 
   .aero-apps-grid,
-  .aero-product-categories,
-  .aero-podcasts-grid,
+  .aero-podcasts-box,
   .aero-brochures-grid,
   .aero-commercial-products,
   .aero-reads-grid,
