@@ -212,11 +212,18 @@
   <script src="../js/chat-agent.js"></script>
   <script>
     (function() {
-      var agent = window.TEChatAgent;
-      if (!agent) return;
-      agent.state.pageContext = 'product-page';
-      agent.state.currentProduct = 'strada-whisper';
-      agent.applyHardcodedStradaState();
+      function run() {
+        var agent = window.TEChatAgent;
+        if (!agent) return;
+        agent.state.pageContext = 'product-page';
+        agent.state.currentProduct = 'strada-whisper';
+        agent.applyHardcodedStradaState();
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+      } else {
+        setTimeout(run, 0);
+      }
     })();
   </script>
 </body>

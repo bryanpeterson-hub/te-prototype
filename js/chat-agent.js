@@ -331,12 +331,12 @@
           <div class="chat-recommendation-cards chat-recommendation-download-cards">
             <a href="#" class="chat-download-card">
               <img src="${base}images/download-icon.png" alt="" class="chat-download-icon">
-              <span class="chat-download-label">Brochure</span>
+              <span class="chat-download-label">Product Brochure</span>
               <span class="chat-download-title">STRADA Whisper Absolute Connectors (English)</span>
             </a>
             <a href="#" class="chat-download-card">
               <img src="${base}images/download-icon.png" alt="" class="chat-download-icon">
-              <span class="chat-download-label">Spec Sheet</span>
+              <span class="chat-download-label">Product Spec Sheet</span>
               <span class="chat-download-title">STRADA Whisper Spec Sheet</span>
             </a>
           </div>
@@ -645,15 +645,22 @@
 
     applyHardcodedStradaState: function() {
       var container = document.getElementById('chatMessages');
-      if (!container) return;
+      var panel = document.getElementById('chatPanel');
+      if (!container || !panel) return;
       container.innerHTML = '';
-      // Conversation history up to the point where prospect clicked to STRADA Whisper page
+
+      // 1. Open panel and show recommendations first (brochure + spec sheet)
+      panel.classList.add('open');
+      this.showRecommendationsPanel();
+      this.updateRecommendationsPanel('strada_downloads');
+
+      // 2. Conversation history up to STRADA product recommendation
       const messages = [
         { text: "Hi! I'm your TE V.A., your TE Virtual Assistant. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?", isUser: false, quickReplies: ['Aerospace connector solutions', 'High-speed interconnect for aircraft', 'Connect with an aerospace expert'] },
         { text: 'HALE UAV high-speed backplane connector', isUser: true },
         { text: "Understood. For HALE platforms, we usually look at VITA-standard ruggedized connectors. To narrow this down: What is your required data rate, and what is the system's differential pair impedance requirement?", isUser: false },
         { text: '56 Gbps 100 Ohm', isUser: true },
-        { text: "Based on that, the STRADA Whisper is your best fit. It's engineered specifically to eliminate crosstalk at high frequencies. While it comes in 85 and 90 Ohm, I recommend the 100 Ohm variant to satisfy your differential pair requirements and ensure maximum signal integrity in that high-vibration HALE environment.", isUser: false, quickReplies: ['That looks like the right profile', 'Show me the specs', 'Schedule a call'] }
+        { text: "Based on that, the STRADA Whisper is your best fit. It's engineered specifically to eliminate crosstalk at high frequencies. While it comes in 85 and 90 Ohm, I recommend the 100 Ohm variant to satisfy your differential pair requirements and ensure maximum signal integrity in that high-vibration HALE environment.", isUser: false }
       ];
 
       messages.forEach(m => {
@@ -664,9 +671,11 @@
       this.state.step = 'strada_page';
       this.state.mentionedProducts = ['strada-whisper'];
 
-      document.getElementById('chatPanel').classList.add('open');
-      this.showRecommendationsPanel();
-      this.updateRecommendationsPanel('strada_downloads');
+      // 3. Agent types follow-up message with quick replies
+      var self = this;
+      this.addMessageWithTyping("Based on your goal, I can pull up specifications for our STRADA Whisper High Speed Backplane Connectors, or would you prefer to see an application note on 'Simulating Real-World Scalable Backplane Solutions'?", {
+        quickReplies: ['Show me specifications', 'Application note', 'Both']
+      }, 600, 25);
     }
   };
 
