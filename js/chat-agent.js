@@ -605,9 +605,14 @@
     },
 
     restoreState: function() {
-      // STRADA Whisper: handled by page-specific inline script in strada-whisper.html (skip here to avoid double-run)
+      // STRADA Whisper: apply hardcoded state immediately (body attribute is reliable)
       const productId = document.body && document.body.dataset.productId;
-      if (productId === 'strada-whisper') return;
+      if (productId === 'strada-whisper') {
+        this.state.pageContext = 'product-page';
+        this.state.currentProduct = 'strada-whisper';
+        this.applyHardcodedStradaState();
+        return;
+      }
 
       try {
         const saved = sessionStorage.getItem('te_chat_state');
