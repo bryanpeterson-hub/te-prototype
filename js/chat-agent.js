@@ -97,8 +97,14 @@
           self.processResponse(text);
           self.saveState();
         }
-        if (e.target.classList.contains('chat-cta-link') || e.target.closest('.chat-cta-link')) {
+        const ctaLink = e.target.closest('.chat-cta-link');
+        if (ctaLink) {
+          e.preventDefault();
           self.saveState();
+          const href = ctaLink.getAttribute('href');
+          if (href && href !== '#') {
+            window.location.href = href;
+          }
         }
       });
     },
