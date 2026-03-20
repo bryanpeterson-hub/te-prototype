@@ -1063,6 +1063,103 @@ nav {
   margin: 0 16px 16px;
 }
 
+.chat-recommendation-card-hero img {
+  height: 180px;
+}
+
+.chat-cta-link-wrap {
+  margin-top: 12px;
+}
+
+.chat-cta-link {
+  display: inline-block;
+  font-weight: 700;
+  color: var(--te-orange);
+  font-size: 0.95rem;
+}
+
+.chat-cta-link:hover {
+  text-decoration: underline;
+}
+
+.chat-download-card {
+  background: white;
+  padding: 20px;
+  border: 1px solid var(--te-border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-download-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 16px 16px 0;
+  border-color: transparent #e0e0e0 transparent transparent;
+}
+
+.chat-download-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.chat-download-label {
+  font-size: 0.75rem;
+  color: var(--te-grey);
+}
+
+.chat-download-title {
+  font-weight: 600;
+  color: #0066A1;
+  font-size: 0.9rem;
+}
+
+.chat-specs-card {
+  background: white;
+  padding: 20px;
+  border: 1px solid var(--te-border);
+  border-radius: 4px;
+}
+
+.chat-specs-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--te-grey);
+  margin: 0 0 16px;
+}
+
+.chat-specs-list {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.chat-specs-list dt {
+  font-weight: 400;
+  color: var(--te-grey);
+  margin-top: 8px;
+}
+
+.chat-specs-list dt:first-of-type {
+  margin-top: 0;
+}
+
+.chat-specs-list dd {
+  font-weight: 700;
+  color: var(--te-grey);
+  margin: 2px 0 0;
+}
+
 .chat-main {
   flex: 1;
   min-width: 0;

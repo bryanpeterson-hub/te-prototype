@@ -95,6 +95,10 @@
           const text = e.target.dataset.text || e.target.textContent;
           self.addUserMessage(text);
           self.processResponse(text);
+          self.saveState();
+        }
+        if (e.target.classList.contains('chat-cta-link') || e.target.closest('.chat-cta-link')) {
+          self.saveState();
         }
       });
     },
@@ -184,7 +188,8 @@
 
       const htmlSuffix = (options.recommendations ? self.renderRecommendations(options.recommendations) : '') +
         (options.specs ? self.renderSpecs(options.specs) : '') +
-        (options.quickReplies ? self.renderQuickReplies(options.quickReplies) : '');
+        (options.quickReplies ? self.renderQuickReplies(options.quickReplies) : '') +
+        (options.ctaLink ? self.renderCtaLink(options.ctaLink) : '');
 
       return new Promise(function(resolve) {
         self.showTypingIndicator();
@@ -251,6 +256,12 @@
       return html;
     },
 
+    renderCtaLink: function(cta) {
+      const text = cta.text || 'Learn more';
+      const url = cta.url || '#';
+      return `<div class="chat-cta-link-wrap"><a href="${url}" class="chat-cta-link">${text} →</a></div>`;
+    },
+
     showRecommendationsPanel: function() {
       const panel = document.getElementById('chatPanel');
       if (!panel) return;
@@ -289,6 +300,58 @@
       panel.appendChild(recPanel);
       panel.appendChild(chatMain);
       panel.classList.add('chat-panel-with-recommendations');
+    },
+
+    updateRecommendationsPanel: function(contentType) {
+      const recPanel = document.getElementById('chatRecommendationsPanel');
+      if (!recPanel) return;
+      const path = window.location.pathname || '';
+      const base = (path.includes('/products/') || path.includes('/industries/')) ? '../' : '';
+
+      if (contentType === 'strada_hero') {
+        recPanel.innerHTML = `
+          <h3 class="chat-recommendations-title">Recommendations:</h3>
+          <div class="chat-recommendation-cards">
+            <div class="chat-recommendation-card chat-recommendation-card-hero">
+              <img src="${base}images/products/strada-hero.png" alt="STRADA Whisper connectors">
+              <h4>STRADA Whisper High Speed Backplane Connectors:</h4>
+              <p>The STRADA Whisper backplane family was designed with your need for high-performing, high-bandwidth systems in mind. Its revolutionary design transfers data up to 112 Gbps—allowing you to achieve efficient future system upgrades without costly backplane or midplane redesigns.</p>
+            </div>
+          </div>
+        `;
+      } else if (contentType === 'strada_downloads') {
+        recPanel.innerHTML = `
+          <h3 class="chat-recommendations-title">Recommendations:</h3>
+          <div class="chat-recommendation-cards chat-recommendation-download-cards">
+            <a href="#" class="chat-download-card">
+              <img src="${base}images/download-icon.png" alt="" class="chat-download-icon">
+              <span class="chat-download-label">Brochure</span>
+              <span class="chat-download-title">STRADA Whisper Absolute Connectors (English)</span>
+            </a>
+            <a href="#" class="chat-download-card">
+              <img src="${base}images/download-icon.png" alt="" class="chat-download-icon">
+              <span class="chat-download-label">Spec Sheet</span>
+              <span class="chat-download-title">STRADA Whisper Spec Sheet</span>
+            </a>
+          </div>
+        `;
+      } else if (contentType === 'strada_specs') {
+        recPanel.innerHTML = `
+          <h3 class="chat-recommendations-title">Recommendations:</h3>
+          <div class="chat-specs-card">
+            <h4>STRADA Whisper 3.9mm</h4>
+            <dl class="chat-specs-list">
+              <dt>TE Internal #</dt><dd>2187461-1</dd>
+              <dt>TE Internal Description</dt><dd>SW PIR HDR BP, 100OHM, 9X6SP DEW</dd>
+              <dt>Number of Positions</dt><dd>96</dd>
+              <dt>Row-to-Row Spacing</dt><dd>2.5 mm [ .098 in ]</dd>
+              <dt>Mating Alignment</dt><dd>With</dd>
+              <dt>Mating Alignment Type</dt><dd>Keyed</dd>
+              <dt>Number of Rows</dt><dd>8</dd>
+            </dl>
+          </div>
+        `;
+      }
     },
 
     addUserMessage: function(text) {
@@ -333,8 +396,46 @@
         return;
       }
 
-      // Maybe later / not ready
-      if (t.includes('maybe later') || t.includes('not ready') || t.includes('not now')) {
+      // 56 Gbps / 100 Ohm response (continues HALE flow on aerospace)
+      if (this.state.pageContext === 'aerospace' && this.state.step === 'hale_awaiting_specs' &&
+          (t.includes('56') || t.includes('gbps')) && (t.includes('100') || t.includes('ohm') || t.includes('impedance'))) {
+        const self = this;
+        const response = "Based on that, the STRADA Whisper is your best fit. It's engineered specifically to eliminate crosstalk at high frequencies. While it comes in 85 and 90 Ohm, I recommend the 100 Ohm variant to satisfy your differential pair requirements and ensure maximum signal integrity in that high-vibration HALE environment.";
+        const stradaUrl = (window.location.pathname || '').includes('/industries/') ? '../products/strada-whisper.html' : 'products/strada-whisper.html';
+        this.updateRecommendationsPanel('strada_hero');
+        this.addMessageWithTyping(response, {
+          ctaLink: { text: 'STRADA Whisper High Speed Backplane Connectors', url: stradaUrl }
+        }, 800, 25).then(function() {
+          self.saveState();
+        });
+        this.state.step = 'strada_recommended';
+        return;
+      }
+
+      // STRADA page: "That looks like the right profile" / UAV launch question
+      if ((this.state.step === 'strada_page' || this.state.step === 'strada_recommended') &&
+          this.state.currentProduct === 'strada-whisper' &&
+          (t.includes('right profile') || t.includes('mechanical shock') || t.includes('uav launch') || t.includes('vibration'))) {
+        const self = this;
+        const response1 = "Yes, the STRADA Whisper has a ruggedized version compliant with VITA 72 standards for high vibration. I've pulled the specific 100 Ohm variant datasheet and the VITA 72 test report for you below.";
+        this.updateRecommendationsPanel('strada_specs');
+        this.addMessageWithTyping(response1, {}, 800, 25).then(function() {
+          self.saveState();
+          self.state.askedForCall = true;
+          const response2 = "Should I schedule a 10-minute call with our lead Avionics Engineer to discuss the thermal modeling for your UAV?";
+          self.addMessageWithTyping(response2, {
+            quickReplies: ['Yes, connect me', 'Maybe later']
+          }, 600, 25).then(function() {
+            self.saveState();
+          });
+        });
+        this.state.step = 'awaiting_call_decision';
+        return;
+      }
+
+      // Maybe later / not ready (HALE flow - after "Should I schedule" on strada page)
+      if ((t.includes('maybe later') || t.includes('not ready') || t.includes('not now')) &&
+          (this.state.step === 'awaiting_call_decision' || this.state.askedForCall)) {
         this.state.saidMaybeLater = true;
         this.state.askedForCall = true;
         this.addMessageWithTyping("No problem! Would you like me to follow up with more information via email? Just share your email address and we'll send you relevant product details and resources.", {
@@ -476,6 +577,7 @@
       if (!text) return;
       this.addUserMessage(text);
       this.processResponse(text);
+      this.saveState();
     },
 
     saveState: function() {
@@ -506,8 +608,16 @@
         (data.messages || []).forEach(m => {
           this.addMessage(m.text, m.isUser);
         });
-        // On product page with prior conversation: add contextual intro
-        if (this.state.pageContext === 'product-page' && this.state.currentProduct && data.messages.length > 0) {
+        // HALE flow: landed on strada-whisper from aerospace - open chat with brochure/spec downloads
+        if (this.state.pageContext === 'product-page' && this.state.currentProduct === 'strada-whisper' &&
+            (data.step === 'strada_recommended' || data.step === 'strada_page' || data.step === 'strada_specs_shown' || data.step === 'awaiting_call_decision' || data.step === 'awaiting_email')) {
+          document.getElementById('chatPanel').classList.add('open');
+          this.showRecommendationsPanel();
+          this.updateRecommendationsPanel('strada_downloads');
+          this.state.step = data.step === 'strada_recommended' ? 'strada_page' : data.step;
+        }
+        // On product page with prior conversation: add contextual intro (skip if HALE flow)
+        else if (this.state.pageContext === 'product-page' && this.state.currentProduct && data.messages.length > 0) {
           const shown = sessionStorage.getItem('te_product_page_intro');
           if (!shown) {
             const product = this.getProductForSpecs();
