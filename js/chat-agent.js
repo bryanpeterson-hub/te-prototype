@@ -251,6 +251,46 @@
       return html;
     },
 
+    showRecommendationsPanel: function() {
+      const panel = document.getElementById('chatPanel');
+      if (!panel) return;
+      let recPanel = document.getElementById('chatRecommendationsPanel');
+      if (recPanel) return; // already shown
+
+      const path = window.location.pathname || '';
+      const base = (path.includes('/products/') || path.includes('/industries/')) ? '../' : '';
+
+      recPanel = document.createElement('div');
+      recPanel.id = 'chatRecommendationsPanel';
+      recPanel.className = 'chat-recommendations-panel';
+      recPanel.innerHTML = `
+        <h3 class="chat-recommendations-title">Recommendations:</h3>
+        <div class="chat-recommendation-cards">
+          <a href="#" class="chat-recommendation-card">
+            <img src="${base}images/whitepaper-connector-design.png" alt="">
+            <h4>White Paper: Connector Design that Meets Extreme Requirements for Next-Gen Mil-Aero Applications</h4>
+            <p>The white paper from TE discusses design trends for connectors, including SWaP (size, weight, and power consumption), and COTS (commercial off-the-shelf) components.</p>
+            <span class="chat-recommendation-link">Learn More →</span>
+          </a>
+          <a href="#" class="chat-recommendation-card">
+            <img src="${base}images/whitepaper-emi-shielding.png" alt="">
+            <h4>Whitepaper: EMI Shielding:</h4>
+            <p>A key component of engineering design considerations: Learn about EMI shielding requirements for drones and UAVs. Comprehensive guide to electromagnetic compatibility and interference protection in unmanned aircraft.</p>
+            <span class="chat-recommendation-link">Learn More →</span>
+          </a>
+        </div>
+      `;
+
+      const chatMain = document.createElement('div');
+      chatMain.className = 'chat-main';
+      while (panel.firstChild) {
+        chatMain.appendChild(panel.firstChild);
+      }
+      panel.appendChild(recPanel);
+      panel.appendChild(chatMain);
+      panel.classList.add('chat-panel-with-recommendations');
+    },
+
     addUserMessage: function(text) {
       this.addMessage(text, true);
       document.getElementById('chatInput').value = '';
@@ -279,6 +319,19 @@
 
     processResponse: function(text) {
       const t = text.toLowerCase().trim();
+
+      // HALE UAV / aerospace backplane flow (Aerospace page only)
+      if (this.state.pageContext === 'aerospace' &&
+          (t.includes('hale') && t.includes('uav')) &&
+          (t.includes('backplane') || t.includes('high-speed') || t.includes('high speed'))) {
+        const self = this;
+        const response = "Understood. For HALE platforms, we usually look at VITA-standard ruggedized connectors. To narrow this down: What is your required data rate, and what is the system's differential pair impedance requirement?";
+        this.addMessageWithTyping(response, {}, 800, 25).then(function() {
+          self.showRecommendationsPanel();
+        });
+        this.state.step = 'hale_awaiting_specs';
+        return;
+      }
 
       // Maybe later / not ready
       if (t.includes('maybe later') || t.includes('not ready') || t.includes('not now')) {
