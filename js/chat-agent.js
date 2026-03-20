@@ -605,14 +605,9 @@
     },
 
     restoreState: function() {
-      // STRADA Whisper page: hardcoded conversation (detect via body attribute, path can vary by server)
+      // STRADA Whisper: handled by page-specific inline script in strada-whisper.html (skip here to avoid double-run)
       const productId = document.body && document.body.dataset.productId;
-      if (productId === 'strada-whisper') {
-        this.state.pageContext = 'product-page';
-        this.state.currentProduct = 'strada-whisper';
-        this.applyHardcodedStradaState();
-        return;
-      }
+      if (productId === 'strada-whisper') return;
 
       try {
         const saved = sessionStorage.getItem('te_chat_state');
@@ -649,12 +644,7 @@
       if (!container || !panel) return;
       container.innerHTML = '';
 
-      // 1. Open panel and show recommendations first (brochure + spec sheet)
-      panel.classList.add('open');
-      this.showRecommendationsPanel();
-      this.updateRecommendationsPanel('strada_downloads');
-
-      // 2. Conversation history up to STRADA product recommendation
+      // 1. Add conversation history first (while chatMessages is in original DOM position)
       const messages = [
         { text: "Hi! I'm your TE V.A., your TE Virtual Assistant. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?", isUser: false, quickReplies: ['Aerospace connector solutions', 'High-speed interconnect for aircraft', 'Connect with an aerospace expert'] },
         { text: 'HALE UAV high-speed backplane connector', isUser: true },
@@ -671,7 +661,11 @@
       this.state.step = 'strada_page';
       this.state.mentionedProducts = ['strada-whisper'];
 
-      // 3. Agent types follow-up message with quick replies
+      // 2. Open panel, show recommendations (brochure + spec sheet), then type follow-up
+      panel.classList.add('open');
+      this.showRecommendationsPanel();
+      this.updateRecommendationsPanel('strada_downloads');
+
       var self = this;
       this.addMessageWithTyping("Based on your goal, I can pull up specifications for our STRADA Whisper High Speed Backplane Connectors, or would you prefer to see an application note on 'Simulating Real-World Scalable Backplane Solutions'?", {
         quickReplies: ['Show me specifications', 'Application note', 'Both']
