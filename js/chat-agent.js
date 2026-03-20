@@ -120,7 +120,7 @@
           requestAnimationFrame(function() {
             self.showGreeting();
           });
-        } else if (this.state.pageContext === 'product-page' && this.state.currentProduct === 'strada-whisper' &&
+        } else if ((this.state.currentProduct === 'strada-whisper' || document.querySelector('[data-strada-page]')) &&
             this.state.step === 'strada_page' && !document.getElementById('chatRecommendationsPanel')) {
           this.showRecommendationsPanel();
           this.updateRecommendationsPanel('strada_downloads');
@@ -616,9 +616,10 @@
     },
 
     restoreState: function() {
-      // STRADA Whisper: apply hardcoded state immediately (body attribute is reliable)
-      const productId = document.body && document.body.dataset.productId;
-      if (productId === 'strada-whisper') {
+      // STRADA Whisper: detect via body attribute or explicit page marker
+      var isStrada = (document.body && document.body.dataset.productId === 'strada-whisper') ||
+          document.querySelector('[data-strada-page]');
+      if (isStrada) {
         this.state.pageContext = 'product-page';
         this.state.currentProduct = 'strada-whisper';
         this.applyHardcodedStradaState();
@@ -657,6 +658,12 @@
     applyHardcodedStradaState: function() {
       var container = document.getElementById('chatMessages');
       if (!container) return;
+      // Pre-seeded HTML in strada-whisper.html: never clear; only sync JS state
+      if (container.dataset.stradaSeeded === 'true' || container.querySelectorAll('.message').length >= 5) {
+        this.state.step = 'strada_page';
+        this.state.mentionedProducts = ['strada-whisper'];
+        return;
+      }
       container.innerHTML = '';
 
       // Add conversation history only (panel stays collapsed until user clicks)
@@ -681,9 +688,13 @@
 
   window.TEChatAgent = ChatAgent;
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => ChatAgent.init());
-  } else {
+  // Always run init when DOM is ready (handles interactive/complete if DC already fired)
+  function runChatInit() {
     ChatAgent.init();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runChatInit);
+  } else {
+    runChatInit();
   }
 })();

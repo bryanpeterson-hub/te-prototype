@@ -180,8 +180,8 @@
     <p class="footer-copyright">© 2024 TE Connectivity. All Rights Reserved.</p>
   </div>
 
-  <!-- Chat Widget -->
-  <div class="chat-widget">
+  <!-- Chat Widget (data-strada-page triggers hardcoded conversation on open) -->
+  <div class="chat-widget" data-strada-page="true">
     <button id="chatToggle" class="chat-toggle" aria-label="Open chat">
       <span class="chat-toggle-text">Ask Me Anything</span>
       <img src="../images/te-agent-icon.png" alt="" class="chat-toggle-icon">
@@ -198,7 +198,42 @@
           <button id="chatClose" class="chat-close" aria-label="Close chat">▾</button>
         </div>
       </div>
-      <div id="chatMessages" class="chat-messages"></div>
+      <div id="chatMessages" class="chat-messages" data-strada-seeded="true">
+        <div class="date-separator">Today</div>
+        <div class="message agent">
+          <div class="message-avatar"><img src="../images/te-agent-icon.png" alt=""></div>
+          <div class="message-content">
+            <div class="message-bubble">Hi! I&#39;m your TE V.A., your TE Virtual Assistant. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?</div>
+            <div class="message-time">Now</div>
+          </div>
+        </div>
+        <div class="message user">
+          <div class="message-content">
+            <div class="message-bubble">I&#39;m designing a HALE UAV. I need a high-speed backplane solution that can handle high vibration without signal degradation.</div>
+            <div class="message-time">Now</div>
+          </div>
+        </div>
+        <div class="message agent">
+          <div class="message-avatar"><img src="../images/te-agent-icon.png" alt=""></div>
+          <div class="message-content">
+            <div class="message-bubble">Understood. For HALE platforms, we usually look at VITA-standard ruggedized connectors. To narrow this down: What is your required data rate, and what is the system&#39;s differential pair impedance requirement?</div>
+            <div class="message-time">Now</div>
+          </div>
+        </div>
+        <div class="message user">
+          <div class="message-content">
+            <div class="message-bubble">We&#39;re pushing 56 Gbps. We need to minimize data reflection, so I&#39;m looking for 100 Ohm impedance to match our specific system architecture.</div>
+            <div class="message-time">Now</div>
+          </div>
+        </div>
+        <div class="message agent">
+          <div class="message-avatar"><img src="../images/te-agent-icon.png" alt=""></div>
+          <div class="message-content">
+            <div class="message-bubble">Based on that, the STRADA Whisper is your best fit. It&#39;s engineered specifically to eliminate crosstalk at high frequencies. While it comes in 85 and 90 Ohm, I recommend the 100 Ohm variant to satisfy your differential pair requirements and ensure maximum signal integrity in that high-vibration HALE environment.<div class="chat-cta-link-wrap"><a href="#" class="chat-cta-link">STRADA Whisper High Speed Backplane Connectors →</a></div></div>
+            <div class="message-time">Now</div>
+          </div>
+        </div>
+      </div>
       <div class="chat-input-area">
         <input type="text" id="chatInput" class="chat-input" placeholder="Type your message..." autocomplete="off">
       </div>
