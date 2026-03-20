@@ -1589,6 +1589,16 @@ nav {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.aero-brochure-card:nth-child(4) {
+  grid-column: 2;
+}
+
+.aero-brochure-card:nth-child(5) {
+  grid-column: 3;
 }
 
 .aero-brochure-card {
@@ -1597,10 +1607,10 @@ nav {
   border: 1px solid var(--te-border);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   text-decoration: none;
-  color: var(--te-blue);
   position: relative;
+  overflow: hidden;
 }
 
 .aero-brochure-card::after {
@@ -1608,14 +1618,18 @@ nav {
   position: absolute;
   top: 0;
   right: 0;
-  width: 24px;
-  height: 24px;
-  background: linear-gradient(135deg, transparent 50%, var(--te-border) 50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 20px 20px 0;
+  border-color: transparent #e0e0e0 transparent transparent;
 }
 
 .aero-brochure-icon {
-  color: var(--te-blue);
-  font-size: 1.25rem;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .aero-brochure-label {
@@ -1625,6 +1639,13 @@ nav {
 
 .aero-brochure-title {
   font-weight: 600;
+  color: #0066A1;
+  font-size: 1rem;
+}
+
+.aero-brochure-card:hover .aero-brochure-title {
+  color: #005080;
+  text-decoration: underline;
 }
 
 .aero-connected-grid {
@@ -2037,6 +2058,11 @@ nav {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .aero-brochure-card:nth-child(4),
+  .aero-brochure-card:nth-child(5) {
+    grid-column: auto;
+  }
+
   .aero-experts-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -2093,6 +2119,11 @@ nav {
   .aero-reads-grid,
   .aero-experts-grid {
     grid-template-columns: 1fr;
+  }
+
+  .aero-brochure-card:nth-child(4),
+  .aero-brochure-card:nth-child(5) {
+    grid-column: auto;
   }
 
   .aero-video-grid,
