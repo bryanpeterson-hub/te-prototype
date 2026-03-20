@@ -120,6 +120,14 @@
           requestAnimationFrame(function() {
             self.showGreeting();
           });
+        } else if (this.state.pageContext === 'product-page' && this.state.currentProduct === 'strada-whisper' &&
+            this.state.step === 'strada_page' && !document.getElementById('chatRecommendationsPanel')) {
+          this.showRecommendationsPanel();
+          this.updateRecommendationsPanel('strada_downloads');
+          var self = this;
+          this.addMessageWithTyping("Based on your goal, I can pull up specifications for our STRADA Whisper High Speed Backplane Connectors, or would you prefer to see an application note on 'Simulating Real-World Scalable Backplane Solutions'?", {
+            quickReplies: ['Show me specifications', 'Application note', 'Both']
+          }, 600, 25);
         }
       }
     },
@@ -147,6 +155,9 @@
       }
       if (options.specs) {
         bubbleContent += this.renderSpecs(options.specs);
+      }
+      if (options.ctaLink) {
+        bubbleContent += this.renderCtaLink(options.ctaLink);
       }
       if (options.quickReplies) {
         bubbleContent += this.renderQuickReplies(options.quickReplies);
@@ -645,36 +656,26 @@
 
     applyHardcodedStradaState: function() {
       var container = document.getElementById('chatMessages');
-      var panel = document.getElementById('chatPanel');
-      if (!container || !panel) return;
+      if (!container) return;
       container.innerHTML = '';
 
-      // 1. Add conversation history first (while chatMessages is in original DOM position)
+      // Add conversation history only (panel stays collapsed until user clicks)
       const messages = [
-        { text: "Hi! I'm your TE V.A., your TE Virtual Assistant. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?", isUser: false, quickReplies: ['Aerospace connector solutions', 'High-speed interconnect for aircraft', 'Connect with an aerospace expert'] },
-        { text: 'HALE UAV high-speed backplane connector', isUser: true },
+        { text: "Hi! I'm your TE V.A., your TE Virtual Assistant. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?", isUser: false },
+        { text: "I'm designing a HALE UAV. I need a high-speed backplane solution that can handle high vibration without signal degradation.", isUser: true },
         { text: "Understood. For HALE platforms, we usually look at VITA-standard ruggedized connectors. To narrow this down: What is your required data rate, and what is the system's differential pair impedance requirement?", isUser: false },
-        { text: '56 Gbps 100 Ohm', isUser: true },
-        { text: "Based on that, the STRADA Whisper is your best fit. It's engineered specifically to eliminate crosstalk at high frequencies. While it comes in 85 and 90 Ohm, I recommend the 100 Ohm variant to satisfy your differential pair requirements and ensure maximum signal integrity in that high-vibration HALE environment.", isUser: false }
+        { text: "We're pushing 56 Gbps. We need to minimize data reflection, so I'm looking for 100 Ohm impedance to match our specific system architecture.", isUser: true },
+        { text: "Based on that, the STRADA Whisper is your best fit. It's engineered specifically to eliminate crosstalk at high frequencies. While it comes in 85 and 90 Ohm, I recommend the 100 Ohm variant to satisfy your differential pair requirements and ensure maximum signal integrity in that high-vibration HALE environment.", isUser: false, ctaLink: { text: 'STRADA Whisper High Speed Backplane Connectors', url: '#' } }
       ];
 
       messages.forEach(m => {
-        const opts = m.quickReplies ? { quickReplies: m.quickReplies } : {};
+        var opts = {};
+        if (m.ctaLink) opts.ctaLink = m.ctaLink;
         this.addMessage(m.text, m.isUser, opts);
       });
 
       this.state.step = 'strada_page';
       this.state.mentionedProducts = ['strada-whisper'];
-
-      // 2. Open panel, show recommendations (brochure + spec sheet), then type follow-up
-      panel.classList.add('open');
-      this.showRecommendationsPanel();
-      this.updateRecommendationsPanel('strada_downloads');
-
-      var self = this;
-      this.addMessageWithTyping("Based on your goal, I can pull up specifications for our STRADA Whisper High Speed Backplane Connectors, or would you prefer to see an application note on 'Simulating Real-World Scalable Backplane Solutions'?", {
-        quickReplies: ['Show me specifications', 'Application note', 'Both']
-      }, 600, 25);
     }
   };
 
