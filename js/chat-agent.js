@@ -240,7 +240,15 @@
           }
           const typeNext = function() {
             if (i >= text.length) {
-              bubble.innerHTML = escapeHtml(text).replace(/\n/g, '<br>') + htmlSuffix;
+              let body = escapeHtml(text).replace(/\n/g, '<br>');
+              if (options.boldEmail) {
+                const e = escapeHtml(options.boldEmail);
+                const idx = body.indexOf(e);
+                if (idx !== -1) {
+                  body = body.substring(0, idx) + '<strong>' + e + '</strong>' + body.substring(idx + e.length);
+                }
+              }
+              bubble.innerHTML = body + htmlSuffix;
               const now = new Date();
               ensureDateSeparator(container, now, msg);
               timeEl.textContent = formatMessageTime(now);
@@ -439,7 +447,7 @@
         });
         setTimeout(function() {
           self.updateRecommendationsPanel('strada_hero');
-        }, 1000);
+        }, 3200);
         this.state.step = 'strada_recommended';
         return;
       }
@@ -462,7 +470,7 @@
         });
         setTimeout(function() {
           self.updateRecommendationsPanel('strada_specs');
-        }, 1000);
+        }, 3200);
         this.state.step = 'awaiting_call_decision';
         return;
       }
@@ -489,11 +497,12 @@
           const stradaEmailFollowUp = this.state.currentProduct === 'strada-whisper' ||
             document.querySelector('[data-strada-page]');
           if (stradaEmailFollowUp) {
-            const followUp = 'No problem. I\'ve sent those 100 Ohm STRADA Whisper specs and the VITA 72 test reports to ' + addr + '.\n\n' +
+            const followUp = 'Great. I\'ve sent those 100 Ohm STRADA Whisper specs and the VITA 72 test reports to ' + addr + '.\n\n' +
               'Look for an email from me shortly with those links. I\'ll also keep you in the loop as we release new high-speed data or UAV-specific design resources that might help with the HALE project.\n\n' +
               'Is there anything else I can help you find today?';
             this.addMessageWithTyping(followUp, {
-              quickReplies: ['No, that\'s all', 'Yes, I have more questions']
+              quickReplies: ['No, that\'s all', 'Yes, I have more questions'],
+              boldEmail: addr
             });
           } else {
             this.addMessageWithTyping(`Thank you! We've noted your email (${addr}). Our team will follow up with product information and our SDR will reach out to discuss your needs. You'll also receive relevant content as part of our nurture campaign. Is there anything else I can help with?`, {
