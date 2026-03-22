@@ -19,6 +19,14 @@
     return weekday + ' ' + time;
   }
 
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
   function ensureDateSeparator(container, date, insertBeforeEl) {
     const dateStr = (date || new Date()).toDateString();
     const existing = container.querySelector('.date-separator[data-date="' + dateStr + '"]');
@@ -89,6 +97,8 @@
       if (input) input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') this.sendUserMessage();
       });
+      const sendBtn = document.getElementById('chatSend');
+      if (sendBtn) sendBtn.addEventListener('click', () => this.sendUserMessage());
 
       document.addEventListener('click', (e) => {
         if (e.target.classList.contains('quick-reply-btn')) {
@@ -225,9 +235,12 @@
           const bubble = msg.querySelector('.message-bubble');
           const timeEl = msg.querySelector('.message-time');
           let i = 0;
+          if (text.indexOf('\n') !== -1) {
+            bubble.style.whiteSpace = 'pre-wrap';
+          }
           const typeNext = function() {
             if (i >= text.length) {
-              bubble.innerHTML = text + htmlSuffix;
+              bubble.innerHTML = escapeHtml(text).replace(/\n/g, '<br>') + htmlSuffix;
               const now = new Date();
               ensureDateSeparator(container, now, msg);
               timeEl.textContent = formatMessageTime(now);
@@ -419,12 +432,14 @@
         const self = this;
         const response = "Based on that, the STRADA Whisper is your best fit. It's engineered specifically to eliminate crosstalk at high frequencies. While it comes in 85 and 90 Ohm, I recommend the 100 Ohm variant to satisfy your differential pair requirements and ensure maximum signal integrity in that high-vibration HALE environment.";
         const stradaUrl = (window.location.pathname || '').includes('/industries/') ? '../products/strada-whisper.html' : 'products/strada-whisper.html';
-        this.updateRecommendationsPanel('strada_hero');
         this.addMessageWithTyping(response, {
           ctaLink: { text: 'STRADA Whisper High Speed Backplane Connectors', url: stradaUrl }
         }, 800, 25).then(function() {
           self.saveState();
         });
+        setTimeout(function() {
+          self.updateRecommendationsPanel('strada_hero');
+        }, 1000);
         this.state.step = 'strada_recommended';
         return;
       }
@@ -435,7 +450,6 @@
           (t.includes('right profile') || t.includes('mechanical shock') || t.includes('uav launch') || t.includes('vibration'))) {
         const self = this;
         const response1 = "Yes, the STRADA Whisper has a ruggedized version compliant with VITA 72 standards for high vibration. I've pulled the specific 100 Ohm variant datasheet and the VITA 72 test report for you below.";
-        this.updateRecommendationsPanel('strada_specs');
         this.addMessageWithTyping(response1, {}, 800, 25).then(function() {
           self.saveState();
           self.state.askedForCall = true;
@@ -446,6 +460,9 @@
             self.saveState();
           });
         });
+        setTimeout(function() {
+          self.updateRecommendationsPanel('strada_specs');
+        }, 1000);
         this.state.step = 'awaiting_call_decision';
         return;
       }
@@ -468,9 +485,21 @@
         if (email) {
           this.state.providedEmail = true;
           this.state.email = email[0];
-          this.addMessageWithTyping(`Thank you! We've noted your email (${email[0]}). Our team will follow up with product information and our SDR will reach out to discuss your needs. You'll also receive relevant content as part of our nurture campaign. Is there anything else I can help with?`, {
-            quickReplies: ['No, that\'s all', 'Yes, I have more questions']
-          });
+          const addr = email[0];
+          const stradaEmailFollowUp = this.state.currentProduct === 'strada-whisper' ||
+            document.querySelector('[data-strada-page]');
+          if (stradaEmailFollowUp) {
+            const followUp = 'No problem. I\'ve sent those 100 Ohm STRADA Whisper specs and the VITA 72 test reports to ' + addr + '.\n\n' +
+              'Look for an email from me shortly with those links. I\'ll also keep you in the loop as we release new high-speed data or UAV-specific design resources that might help with the HALE project.\n\n' +
+              'Is there anything else I can help you find today?';
+            this.addMessageWithTyping(followUp, {
+              quickReplies: ['No, that\'s all', 'Yes, I have more questions']
+            });
+          } else {
+            this.addMessageWithTyping(`Thank you! We've noted your email (${addr}). Our team will follow up with product information and our SDR will reach out to discuss your needs. You'll also receive relevant content as part of our nurture campaign. Is there anything else I can help with?`, {
+              quickReplies: ['No, that\'s all', 'Yes, I have more questions']
+            });
+          }
           this.state.step = 'complete';
         }
         return;

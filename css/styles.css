@@ -1345,7 +1345,15 @@ nav {
   background: var(--te-white);
 }
 
+.chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .chat-input {
+  flex: 1;
+  min-width: 0;
   width: 100%;
   padding: 12px 20px;
   border: 1px solid var(--te-border);
@@ -1356,6 +1364,40 @@ nav {
 .chat-input:focus {
   outline: none;
   border-color: var(--te-orange);
+}
+
+.chat-send-btn {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--te-orange);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.chat-send-btn:hover,
+.chat-send-btn:focus-visible {
+  background: var(--te-orange);
+  color: var(--te-white);
+  outline: none;
+}
+
+.chat-send-btn:active {
+  background: var(--te-orange-dark);
+  color: var(--te-white);
+}
+
+.chat-send-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
 }
 
 .chat-footer {
