@@ -145,7 +145,7 @@ body {
 
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 28px;
   margin: -36px 0 0;
   position: relative;
@@ -362,6 +362,12 @@ body {
 }
 
 /* Responsive */
+@media (max-width: 980px) {
+  .video-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 780px) {
   .hero {
     padding: 44px 20px 56px;
