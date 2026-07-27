@@ -400,7 +400,7 @@
     showGreeting: function() {
       const isProductPage = this.state.pageContext === 'product-page';
       const isAerospace = this.state.pageContext === 'aerospace';
-      let greeting = "Hi! I'm your TE V.A., your TE Virtual Assistant. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?";
+      let greeting = "Hi! I'm your TE Agent, your TE Virtual Agent. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?";
       let examples = [
         "What EV connectors do you recommend?",
         "I need help with battery connectivity",
@@ -408,7 +408,7 @@
       ];
 
       if (isProductPage) {
-        greeting = "Hi! I'm your TE V.A., your TE Virtual Assistant. I see you're looking at our products. I can provide more specific recommendations based on your needs. What would you like to know?";
+        greeting = "Hi! I'm your TE Agent, your TE Virtual Agent. I see you're looking at our products. I can provide more specific recommendations based on your needs. What would you like to know?";
         examples = ["Show me the specs", "Compare with other products", "Schedule a call with sales"];
       } else if (isAerospace) {
         examples = ["Aerospace connector solutions", "High-speed interconnect for aircraft", "Connect with an aerospace expert"];
@@ -706,7 +706,7 @@
 
       // Add conversation history only (panel stays collapsed until user clicks)
       const messages = [
-        { text: "Hi! I'm your TE V.A., your TE Virtual Assistant. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?", isUser: false },
+        { text: "Hi! I'm your TE Agent, your TE Virtual Agent. I can help match your needs to one of our TE Solutions, show you product specifications, or connect you with a sales rep. Ask me anything. How can I help you today?", isUser: false },
         { text: "I'm designing a HALE UAV. I need a high-speed backplane solution that can handle high vibration without signal degradation.", isUser: true },
         { text: "Understood. For HALE platforms, we usually look at VITA-standard ruggedized connectors. To narrow this down: What is your required data rate, and what is the system's differential pair impedance requirement?", isUser: false },
         { text: "We're pushing 56 Gbps. We need to minimize data reflection, so I'm looking for 100 Ohm impedance to match our specific system architecture.", isUser: true },
